@@ -6,8 +6,9 @@ import java.util.HashMap;
 public class CalculadoraPuntaje {
 
 
-    public int calcularPuntaje(ArrayList<Integer> valoresDados){
+    public ResultadoTirada calcularPuntaje(ArrayList<Integer> valoresDados){
         HashMap<Integer, Integer> conteo = new HashMap<>();
+        int dadosUsados = 0;
         int puntajeTotal = 0;
         for (Integer valor : valoresDados){
             conteo.put(valor, conteo.getOrDefault(valor, 0) + 1);
@@ -15,6 +16,7 @@ public class CalculadoraPuntaje {
         for(int cara = 1; cara <= 6; cara++){
             int cantidad = conteo.getOrDefault(cara, 0);
             if(cantidad >= 3){
+                dadosUsados += 3;
                 if (cara == 1){
                     puntajeTotal += 1000;
                 }
@@ -25,11 +27,13 @@ public class CalculadoraPuntaje {
             }
             if (cara == 1){
                 puntajeTotal += (cantidad * 100);
+                dadosUsados += cantidad;
             }
             if (cara == 5){
                 puntajeTotal += (cantidad * 50);
+                dadosUsados += cantidad;
             }
         }
-        return puntajeTotal;
+        return new ResultadoTirada(puntajeTotal, dadosUsados, valoresDados);
     }
 }
