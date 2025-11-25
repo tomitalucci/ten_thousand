@@ -6,7 +6,7 @@ import com.poo.unlu.observador.Observador;
 
 import java.util.Scanner;
 
-public class VistaConsola implements Observador {
+public class VistaConsola implements Observador { //implemento la interfaz para recibir avisos de cambio del juego
     private Controlador controlador;
     private Scanner scanner;
 
@@ -14,7 +14,7 @@ public class VistaConsola implements Observador {
     public VistaConsola(Controlador controlador) {
         this.controlador = controlador;
         this.scanner = new Scanner(System.in);
-        this.controlador.registrarObservador(this);
+        this.controlador.registrarObservador(this); //se suscribe a la lista de observadores y esta al tanto de cambios en el juego
     }
 
 

@@ -1,13 +1,10 @@
 package com.poo.unlu;
 
 import com.poo.unlu.controlador.Controlador;
-import com.poo.unlu.modelo.Dado;
 import com.poo.unlu.modelo.Juego;
 import com.poo.unlu.vista.VistaConsola;
 
-import java.util.ArrayList;
-
-public class MainApplication {
+public class Main {
     public static void main (String[] args){
 
         Juego modelo = new Juego();

@@ -4,12 +4,15 @@ import com.poo.unlu.observador.Observable;
 
 import java.util.ArrayList;
 
+// FACHADA. Administra el estado global del juego
+
+//Heredo de Observable para poder avisar a la vista cuando cambia el estado
 public class Juego extends Observable {
     private ArrayList<Jugador> jugadores;
     private Cubilete cubilete;
     private CalculadoraPuntaje calculadora;
-    private int turnoActual;
-    private int puntosAcumuladosEnTurno;
+    private int turnoActual; //indice del jugador dentro de la lista
+    private int puntosAcumuladosEnTurno; //hace referencia al pozo temporal antes de que un jugador decida plantarse
     private int dadosDisponibles;
     private Jugador ganador;
 
@@ -54,10 +57,10 @@ public class Juego extends Observable {
 
 
     public void cambiarTurno(){
-        dadosDisponibles = 5;
-        puntosAcumuladosEnTurno = 0;
-        turnoActual ++;
-        if (turnoActual >= jugadores.size()){
+        dadosDisponibles = 5; //reinicio los dados a 5 para la tirada del prox jugador
+        puntosAcumuladosEnTurno = 0; //reinicio el pozo
+        turnoActual ++; //aumento el indice para hacer referencia al siguiente jugador
+        if (turnoActual >= jugadores.size()){ // cuando llego al final de la lista vuelvo el indice a 0 pq es turno del primer jugador
             turnoActual = 0;
         }
         notificarObservadores();
@@ -65,12 +68,12 @@ public class Juego extends Observable {
 
     public void plantarse(){
         Jugador actual = getJugadorActual();
-        actual.sumarPuntos(puntosAcumuladosEnTurno);
-        if (actual.getPuntosTotales() >= 10000){
+        actual.sumarPuntos(puntosAcumuladosEnTurno); //es la instruccion que hace efectiva la suma de los puntos del jugador
+        if (actual.getPuntosTotales() >= 10000){//condicion para la victoria del juego
             ganador = actual;
             notificarObservadores();
         } else {
-            cambiarTurno();
+            cambiarTurno();//si no gano sigue el juego
         }
 
     }

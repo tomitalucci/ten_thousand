@@ -5,14 +5,14 @@ import com.poo.unlu.modelo.ResultadoTirada;
 import com.poo.unlu.observador.Observador;
 
 public class Controlador {
-    private Juego juego;
+    private Juego juego; //referencia al modelo
 
 
     public Controlador(Juego juego) {
         this.juego = juego;
     }
 
-    public void registrarObservador(Observador observador){
+    public void registrarObservador(Observador observador){ //la vista pide registrarse
         juego.addObserver(observador);
     }
 
@@ -24,7 +24,7 @@ public class Controlador {
         juego.plantarse();
     }
 
-    public ResultadoTirada lanzarDados(){
+    public ResultadoTirada lanzarDados(){ //la vista llama aca y el controlador ejecuta en el modelo
         return juego.tirarDados();
     }
 

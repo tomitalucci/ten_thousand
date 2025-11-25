@@ -2,6 +2,8 @@ package com.poo.unlu.modelo;
 
 import java.util.ArrayList;
 
+
+//este es el objeto q uso para mandar la informacion a traves de la calculadora de puntaje.
 public class ResultadoTirada {
     private int puntaje;
     private int dadosQuePuntuaron;

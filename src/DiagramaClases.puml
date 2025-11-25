@@ -1,0 +1,134 @@
+@startuml
+
+title Diagrama de Clases - Diez Mil
+skinparam classAttributeIconSize 0
+
+' --- PAQUETE MODELO ---
+package "com.poo.unlu.modelo" {
+    class Dado {
+        - caraSuperior : int
+        - random : Random
+        + lanzar() : int
+        + getCaraSuperior() : int
+    }
+
+    class Cubilete {
+        - manoDeDados : ArrayList<Dado>
+        - dadosActivos : int
+        + Cubilete()
+        + tirarDados(cantidad : int)
+        + getManoDeDados() : ArrayList<Integer>
+    }
+
+    class CalculadoraPuntaje {
+        + calcularPuntaje(valores : ArrayList<Integer>) : ResultadoTirada
+    }
+
+    class ResultadoTirada {
+        - puntaje : int
+        - dadosQuePuntuaron : int
+        - valores : ArrayList<Integer>
+        + ResultadoTirada(puntaje: int, dadosQuePuntuaron: int, valores: ArrayList<Integer>)
+        + getPuntaje() : int
+        + getDadosQuePuntuaron() : int
+        + getValores() : ArrayList<Integer>
+    }
+
+    class Jugador {
+        - nombre : String
+        - puntosTotales : int
+        + Jugador(nombre: String)
+        + sumarPuntos(puntos : int)
+        + getNombre() : String
+        + getPuntosTotales() : int
+    }
+
+    class Juego {
+        - jugadores : ArrayList<Jugador>
+        - cubilete : Cubilete
+        - calculadora : CalculadoraPuntaje
+        - turnoActual : int
+        - puntosAcumuladosEnTurno : int
+        - dadosDisponibles : int
+        - ganador : Jugador
+        + Juego()
+        + agregarJugador(nombre : String)
+        + tirarDados() : ResultadoTirada
+        + getJugadorActual() : Jugador
+        + cambiarTurno()
+        + plantarse()
+        + hayGanador() : boolean
+        + getGanador() : Jugador
+    }
+}
+
+' --- PAQUETE OBSERVADOR ---
+package "com.poo.unlu.observador" {
+    interface Observador {
+        + actualizar()
+    }
+
+    class Observable {
+        - observadores : ArrayList<Observador>
+        + Observable()
+        + addObserver(observador : Observador)
+        + notificarObservadores()
+    }
+}
+
+' --- PAQUETE CONTROLADOR ---
+package "com.poo.unlu.controlador" {
+    class Controlador {
+        - juego : Juego
+        + Controlador(juego : Juego)
+        + registrarObservador(observador : Observador)
+        + agregarJugador(nombre : String)
+        + plantarse()
+        + lanzarDados() : ResultadoTirada
+        + getPuntosTotalesJugadorActual() : int
+        + getNombreJugadorActual() : String
+        + juegoTerminado() : boolean
+        + getNombreGanador() : String
+    }
+}
+
+' --- PAQUETE VISTA ---
+package "com.poo.unlu.vista" {
+    class VistaConsola {
+        - controlador : Controlador
+        - scanner : Scanner
+        + VistaConsola(controlador : Controlador)
+        + iniciar()
+        + mostrarMenu()
+        + actualizar()
+    }
+}
+
+' --- MAIN ---
+class Main {
+    + {static} main(args : String[])
+}
+
+' --- RELACIONES ---
+
+' Herencia e Implementación
+Juego --|> Observable
+VistaConsola ..|> Observador
+
+' Relaciones del Modelo
+Cubilete "1" *-- "5" Dado : contiene >
+Juego "1" *-- "1" Cubilete : tiene >
+Juego "1" *-- "1" CalculadoraPuntaje : usa >
+Juego "1" o-- "*" Jugador : administra >
+Juego ..> ResultadoTirada : genera >
+CalculadoraPuntaje ..> ResultadoTirada : crea >
+
+' Relaciones MVC (Main conecta todo)
+Main ..> Juego : crea
+Main ..> Controlador : crea
+Main ..> VistaConsola : crea
+
+Controlador --> "1" Juego : controla >
+VistaConsola --> "1" Controlador : delega acciones >
+
+@enduml
